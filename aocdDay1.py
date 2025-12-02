@@ -23,7 +23,7 @@ class Solution:
     def FindPasswordPart2(self, rotations: List[str]) -> int:
         combination_start = 50
         zero_count = 0
-        
+
         for rotation in rotations:
             initial_position = combination_start
             rotate = rotation.strip('\n')
@@ -82,10 +82,10 @@ class TestSolution:
         answer = test6.FindPasswordPart2(rotations)
         assert answer == 8, f"Test failed for FindPasswordPart2: test6, returned {answer} when should be 8"
 
-        test6 = Solution()
+        test7 = Solution()
         rotations = ["L50\n", "R300", "L400", "R50" ]
-        answer = test6.FindPasswordPart2(rotations)
-        assert answer == 8, f"Test failed for FindPasswordPart2: test6, returned {answer} when should be 8"
+        answer = test7.FindPasswordPart2(rotations)
+        assert answer == 8, f"Test failed for FindPasswordPart2: test7, returned {answer} when should be 8"
     
 
 if __name__ == "__main__":
