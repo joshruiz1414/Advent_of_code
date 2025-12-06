@@ -2,22 +2,28 @@ from typing import List, Tuple, Optional
 import heapq
 import time
 
-
 class Solution:
     def findFreshFruitPart1(self, fresh_ranges: List[tuple[int, int]], check_ids: List[int]) -> int:
-        check_ids.sort()
-        fresh_fruit = 0
-        for check_id in check_ids:
-            for start, end in fresh_ranges:
-                if check_id < start:
+        starts = [start for start, _ in fresh_ranges]
+        
+        fresh_counter = 0
+        for id in check_ids:
+            left, right = 0, len(starts) - 1
+            while left <= right:
+                mid = (left + right) // 2
+                if id == starts[mid]:
+                    right = mid
                     break
-                elif start <= check_id <= end:
-                    fresh_fruit += 1
-                    break
-         
+                if id > starts[mid]:
+                    left = mid + 1
+                else:
+                    right = mid - 1
+            start, end = fresh_ranges[right]
+            if start <= id <= end:
+                fresh_counter += 1
 
-
-        return fresh_fruit
+            
+        return fresh_counter
     
     def findFreshFruitPart2(self, fresh_ranges: List[tuple[int, int]]) -> int:
         num_of_fresh_ids = 0
@@ -99,5 +105,6 @@ if __name__ == "__main__":
 
     print('answer to the first part is:', answer_part1)
     print('answer to the second part is:', answer_part2)
+
     end_time = time.perf_counter()
     print(f"\nTotal runtime: {end_time - start_time:.6f} seconds")
