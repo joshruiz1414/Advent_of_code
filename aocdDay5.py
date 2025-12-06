@@ -1,5 +1,6 @@
 from typing import List, Tuple, Optional
 import heapq
+import time
 
 
 class Solution:
@@ -7,17 +8,12 @@ class Solution:
         check_ids.sort()
         fresh_fruit = 0
         for check_id in check_ids:
-            num_to_pop = 0
             for start, end in fresh_ranges:
                 if check_id < start:
                     break
                 elif start <= check_id <= end:
                     fresh_fruit += 1
                     break
-                else:
-                    num_to_pop += 1
-            for _ in range(num_to_pop):
-                fresh_ranges.pop(0)
          
 
 
@@ -49,7 +45,7 @@ class Solution:
         return fixed_id_ranges
 
 if __name__ == "__main__":
-
+    start_time = time.perf_counter()
     solution = Solution()
     spoiled_database_file = open("aocdInputFiles/aocdDay5.txt", "r")
     id_ranges = []
@@ -71,7 +67,7 @@ if __name__ == "__main__":
 
     spoiled_database_file.close()
 
-    #Testing part1 ----------------------------
+    #Testing part1 and part2 ----------------------------
 
     test_ranges = [tuple('3-5'.split('-')),
             tuple('10-14'.split('-')),
@@ -89,17 +85,19 @@ if __name__ == "__main__":
 
     test_fixed_ranges = solution.fixRanges(test_ranges)
 
-    test_answer_part1 = solution.findFreshFruitPart1(test_fixed_ranges.copy(), test_id_check)
+    test_answer_part1 = solution.findFreshFruitPart1(test_fixed_ranges, test_id_check)
     test_answer_part2 = solution.findFreshFruitPart2(test_fixed_ranges)
 
     print('answer to the first part for the test is:', test_answer_part1)
     print('answer to the second part for the test is:', test_answer_part2)
 
-    #Testing part1 ----------------------------
+    #Testing part1 and part2 ----------------------------
     fixed_ranges = solution.fixRanges(id_ranges)
 
-    answer_part1 = solution.findFreshFruitPart1(fixed_ranges.copy(), ids_to_check)
+    answer_part1 = solution.findFreshFruitPart1(fixed_ranges, ids_to_check)
     answer_part2 = solution.findFreshFruitPart2(fixed_ranges)
 
     print('answer to the first part is:', answer_part1)
     print('answer to the second part is:', answer_part2)
+    end_time = time.perf_counter()
+    print(f"\nTotal runtime: {end_time - start_time:.6f} seconds")
