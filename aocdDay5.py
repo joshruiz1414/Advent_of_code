@@ -22,6 +22,14 @@ class Solution:
 
 
         return fresh_fruit
+    
+    def findFreshFruitPart2(self, fresh_ranges: List[tuple[int, int]]) -> int:
+        num_of_fresh_ids = 0
+
+        for start, end in fresh_ranges:
+            num_of_fresh_ids += (end - start) + 1
+
+        return num_of_fresh_ids
 
     def fixRanges(self, id_ranges) -> List[tuple[int, int]]:
         num_id_ranges = [(int(start), int(end)) for start, end in id_ranges]
@@ -81,16 +89,17 @@ if __name__ == "__main__":
 
     test_fixed_ranges = solution.fixRanges(test_ranges)
 
-    test_answer_part1 = solution.findFreshFruitPart1(test_fixed_ranges, test_id_check)
+    test_answer_part1 = solution.findFreshFruitPart1(test_fixed_ranges.copy(), test_id_check)
+    test_answer_part2 = solution.findFreshFruitPart2(test_fixed_ranges)
 
     print('answer to the first part for the test is:', test_answer_part1)
+    print('answer to the second part for the test is:', test_answer_part2)
 
     #Testing part1 ----------------------------
-
     fixed_ranges = solution.fixRanges(id_ranges)
 
-    answer_part1 = solution.findFreshFruitPart1(fixed_ranges, ids_to_check)
-    #answer_part2 = solution.findSpoiledFruitPart2()
+    answer_part1 = solution.findFreshFruitPart1(fixed_ranges.copy(), ids_to_check)
+    answer_part2 = solution.findFreshFruitPart2(fixed_ranges)
 
     print('answer to the first part is:', answer_part1)
-    #print('answer to the second part is:', answer_part2)
+    print('answer to the second part is:', answer_part2)
