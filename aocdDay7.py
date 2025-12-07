@@ -1,12 +1,17 @@
 from typing import List, Tuple, Optional
 import time
-import math
+from collections import defaultdict
+
+class TreeNode:
+    def __init__(self, left=None, right=None):
+        self.left = left
+        self.right = right
 
 
 class Solution:
     def findNumSplitsPart1(self, beam_grid: List[List[int]]) -> int:
-        ROW, COL = len(beam_grid), len(beam_grid[0])
         total_splits = 0
+        ROW, COL = len(beam_grid), len(beam_grid[0])
         beam_cols = set()
         for row in range(ROW):
             for col in range(COL):
@@ -14,17 +19,39 @@ class Solution:
                     beam_cols.add(col)
                 if beam_grid[row][col] == '^' and col in beam_cols:
                     beam_cols.remove(col)
+                    # Splits everytime we see a ^ so remove that col for having a beam
                     total_splits += 1
-                    if col + 1 < COL: 
+                    # Add col of left and right of ^ to set
+                    if col + 1 < COL:
                         beam_cols.add(col + 1)
                     if col - 1 >= 0:
                         beam_cols.add(col - 1)
 
-
-
-
         return total_splits
-    
+
+    def findNumSplitsPart2(self, beam_grid: List[List[str]]) -> int:
+        ROW, COL = len(beam_grid), len(beam_grid[0])
+        total_timelines = 0
+        beam_cols = defaultdict(int)
+        for row in range(ROW):
+            for col in range(COL):
+                if beam_grid[row][col] == 'S':
+                    beam_cols[col] = 1
+
+                if beam_grid[row][col] == '^' and col in beam_cols:
+                    # Add previous ways to get to that path onto new path to get amount of timelines
+                    if col + 1 < COL:
+                        beam_cols[col + 1] += beam_cols[col]
+                    if col - 1 >= 0:
+                        beam_cols[col - 1] += beam_cols[col]
+                    beam_cols[col] = 0
+
+        # Add up total timelines in the end
+        for timelines in beam_cols.values():
+            total_timelines += timelines
+
+        return total_timelines
+
 
 
 
@@ -47,14 +74,12 @@ if __name__ == "__main__":
 
         beam_grid.append(list(beam_line.strip('\n')))
 
-    
     beam_file.close()
-    print(beam_grid[0])
     answer_part1 = solution.findNumSplitsPart1(beam_grid)
-    #answer_part2 = solution.findNumSplitsPart2(beam_grid)
+    answer_part2 = solution.findNumSplitsPart2(beam_grid)
 
     print('\nanswer to the first part is:', answer_part1)
-    #print('answer to the second part is:', answer_part2)
+    print('answer to the second part is:', answer_part2)
 
     end_time = time.perf_counter()
     print(f"\nTotal runtime: {end_time - start_time:.6f} seconds")
