@@ -6,9 +6,27 @@ import time
 
 class Solution:
     def findMathResultPart1(self, math_grid: List[List[int]], operators: List[str]) -> int:
-        operator_map = {}
-        tota_num = 0
-        return tota_num
+        total_num = 0
+        curr_row = 0
+        for col in range(len(math_grid[curr_row])):
+            curr_operator = operators[col]
+            col_total = 0 if curr_operator == '+' else 1
+            for row in range(len(math_grid)):
+                curr_num = math_grid[row][col]
+                if curr_operator == '*':
+                    col_total *= curr_num
+                elif curr_operator == '+':
+                    col_total += curr_num
+            curr_row += 1
+            total_num += col_total
+
+
+
+        return total_num
+
+
+    #def verticalMath(self, col_nums: List[str], operator: str):
+
 
 
 if __name__ == "__main__":
@@ -26,11 +44,11 @@ if __name__ == "__main__":
         math_grid.append([int(num) for num in eq_numbers.strip('\n').split()])
 
     
-    answer_part1 = solution.findMathResultPart1(math_grid, operators)
-
     math_file.close()
 
-    print('answer to the first part is:', answer_part1)
+    answer_part1 = solution.findMathResultPart1(math_grid, operators)
+
+    print('\nanswer to the first part is:', answer_part1)
     #print('answer to the second part is:', answer_part2)
 
     end_time = time.perf_counter()
